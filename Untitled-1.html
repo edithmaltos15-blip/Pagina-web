@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad 7: Encoders (Codificadores)</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-bottom: 2px solid var(--accent);
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--accent);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        /* Nav Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Simulator Styles */
+        .simulator-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 8px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #334155 20%, #1e293b 80%);
+            transition: transform 0.1s ease;
+        }
+
+        .wheel-line {
+            position: absolute;
+            width: 4px;
+            height: 50%;
+            background-color: #ef4444;
+            top: 0;
+            transform-origin: bottom center;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        button.ctrl-btn {
+            background-color: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button.ctrl-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .signals {
+            width: 100%;
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #4ade80;
+        }
+
+        /* Responsive Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #0f172a;
+            color: var(--accent);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Actividad 7: Encoders (Codificadores)</h1>
+        <p class="subtitle">Página Web Interactiva sobre Sistemas de Medición y Control Angular/Lineal</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab(event, 'concepto')">¿Qué es un Encoder?</button>
+            <button class="tab-btn" onclick="openTab(event, 'tipos')">Tipos de Encoders</button>
+            <button class="tab-btn" onclick="openTab(event, 'simulador')">Simulador Interactivo</button>
+            <button class="tab-btn" onclick="openTab(event, 'aplicaciones')">Aplicaciones</button>
+        </div>
+
+        <!-- Section 1: Concepto -->
+        <div id="concepto" class="tab-content active card">
+            <h2>Concepto Fundamental</h2>
+            <p>Un <strong>Encoder</strong> (o codificador rotatorio/lineal) es un dispositivo electro-mecánico de entrada que convierte el movimiento físico (posición angular o lineal) en una señal eléctrica digital o analógica.</p>
+            <br>
+            <p>Estas señales son interpretadas por controladores lógicos programables (PLC), microcontroladores (como Arduino/ESP32) o tarjetas de adquisición de datos para determinar:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Posición exacta</li>
+                <li>Velocidad de rotación (RPM)</li>
+                <li>Dirección de giro (sentido horario o antihorario)</li>
+                <li>Aceleración</li>
+            </ul>
+        </div>
+
+        <!-- Section 2: Tipos -->
+        <div id="tipos" class="tab-content card">
+            <h2>Clasificación de Encoders</h2>
+            
+            <h3>1. Según el Tipo de Señal de Salida</h3>
+            <table>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Funcionamiento</th>
+                    <th>Ventajas</th>
+                </tr>
+                <tr>
+                    <td><strong>Incremental</strong></td>
+                    <td>Genera pulsos eléctricos a medida que gira. Requiere un punto de referencia inicial (Home).</td>
+                    <td>Económico, sencillo de implementar, ideal para medir velocidad.</td>
+                </tr>
+                <tr>
+                    <td><strong>Absoluto</strong></td>
+                    <td>Asigna un código digital único (ej. Código Gray o Binario) a cada posición del disco.</td>
+                    <td>No pierde la posición exacta al apagar el sistema o perder energía.</td>
+                </tr>
+            </table>
+
+            <br>
+            <h3>2. Según la Tecnología de Detección</h3>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>Ópticos:</strong> Utilizan un disco con ranuras, un LED emisor y un fototransistor receptor. Al girar, la luz se interrumpe generando los pulsos.</li>
+                <li><strong>Magnéticos:</strong> Emplean un sensor de efecto Hall para detectar variaciones en el campo magnético de un disco imantado. Resisten mejor el polvo y la humedad.</li>
+            </ul>
+        </div>
+
+        <!-- Section 3: Simulador -->
+        <div id="simulador" class="tab-content card">
+            <h2>Simulador de Encoder Incremental en Cuadratura</h2>
+            <p>Usa los botones para girar el encoder y observa las señales digitales del Canal A y Canal B.</p>
+            <br>
+
+            <div class="simulator-box">
+                <div class="wheel-container" id="encoderWheel">
+                    <div class="wheel-line"></div>
+                </div>
+
+                <div class="controls">
+                    <button class="ctrl-btn" onclick="rotateWheel(-30)">↺ Girar Izquierda (CCW)</button>
+                    <button class="ctrl-btn" onclick="rotateWheel(30)">↻ Girar Derecha (CW)</button>
+                </div>
+
+                <div class="signals">
+                    <p><strong>Posición Angular:</strong> <span id="angle">0</span>°</p>
+                    <p><strong>Canal A:</strong> <span id="channelA">0</span></p>
+                    <p><strong>Canal B:</strong> <span id="channelB">0</span></p>
+                    <p><strong>Dirección:</strong> <span id="direction">Detenido</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Aplicaciones -->
+        <div id="aplicaciones" class="tab-content card">
+            <h2>Aplicaciones Industriales y Mecatrónicas</h2>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>Robótica Industrial:</strong> Retroalimentación de posición de las articulaciones de un brazo robótico.</li>
+                <li><strong>Impresoras 3D y CNC:</strong> Control preciso del movimiento de los ejes X, Y, Z.</li>
+                <li><strong>Sistemas Automotrices:</strong> Control de dirección asistida y medición de RPM en sistemas de frenado ABS.</li>
+                <li><strong>Servomotores:</strong> Cierre del bucle de control (PID) de posición y velocidad.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Actividad 7 - Desarrollo de Página Web Interactiva</p>
+    </footer>
+
+    <script>
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Simulador JS
+        let currentAngle = 0;
+        const wheel = document.getElementById('encoderWheel');
+        const angleDisplay = document.getElementById('angle');
+        const channelADisplay = document.getElementById('channelA');
+        const channelBDisplay = document.getElementById('channelB');
+        const directionDisplay = document.getElementById('direction');
+
+        function rotateWheel(deg) {
+            currentAngle = (currentAngle + deg) % 360;
+            if (currentAngle < 0) currentAngle += 360;
+
+            wheel.style.transform = `rotate(${currentAngle}deg)`;
+            angleDisplay.textContent = currentAngle;
+
+            // Simulación de señales en cuadratura (A y B desfasados 90°)
+            let stateA = Math.sin(currentAngle * Math.PI / 180) >= 0 ? 1 : 0;
+            let stateB = Math.cos(currentAngle * Math.PI / 180) >= 0 ? 1 : 0;
+
+            channelADisplay.textContent = stateA;
+            channelBDisplay.textContent = stateB;
+
+            if (deg > 0) {
+                directionDisplay.textContent = "Derecha (CW)";
+                directionDisplay.style.color = "#38bdf8";
+            } else {
+                directionDisplay.textContent = "Izquierda (CCW)";
+                directionDisplay.style.color = "#ef4444";
+            }
+        }
+    </script>
+</body>
+</html>
